@@ -36,4 +36,4 @@ jobs:
       - name: Run unit tests
         run: |
           uv run pytest tests/
-        working-directory: ./cfdb
+        working-directory: .
