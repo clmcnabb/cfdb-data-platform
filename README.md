@@ -1,58 +1,124 @@
 
-# Welcome to your CDK Python project!
+# Sports Data Platform CDK Project
 
-This is a blank project for CDK development with Python.
+This project defines an AWS Cloud Development Kit (CDK) application for a sports data platform. The platform includes:
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+* An S3 bucket for raw JSON data.
+* An S3 bucket for processed Parquet data.
+* A DynamoDB table to log API calls per month.
+* A Lambda function to ingest data via API calls.
+* An AWS Glue crawler to infer schemas and convert JSON to Parquet.
+* An Athena workgroup for SQL querying of Parquet data.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+The project uses Python and `uv` for dependency management. The `cdk.json` file configures the CDK Toolkit to execute the app.
 
-To manually create a virtualenv on MacOS and Linux:
+## Prerequisites
 
+* **Python 3.9+** : Ensure `python3` is installed and accessible in your PATH.
+* **uv** : Install `uv` for dependency and environment management. See [uv documentation](https://docs.astral.sh/uv/) for installation instructions.
+* **AWS CLI** : Configure with valid credentials and a default region (e.g., `us-east-1`).
+* **AWS CDK CLI** : Install globally with `npm install -g aws-cdk`.
+
+## Setting up the project
+
+Navigate to the project root directory and initialize the `uv` environment:
+
+```bash
+$ uv sync
 ```
-$ python3 -m venv .venv
-```
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+This command creates a virtual environment (in `.venv`) and installs dependencies listed in `pyproject.toml`, locking versions in `uv.lock` for reproducibility.
 
-```
+To activate the virtual environment on MacOS or Linux:
+
+```bash
 $ source .venv/bin/activate
 ```
 
-If you are a Windows platform, you would activate the virtualenv like this:
+On Windows:
 
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
+```bash
+> .venv\Scripts\activate.bat
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+Alternatively, use `uv run` to execute commands within the `uv`-managed environment without activating the virtual environment.
 
-```
-$ cdk synth
+## Synthesizing the CloudFormation template
+
+To synthesize the CloudFormation templates for the stacks:
+
+```bash
+$ uv run cdk synth
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+This generates templates in the `cdk.out/` directory.
+
+## Deploying the stacks
+
+To deploy all stacks to your AWS account:
+
+```bash
+$ uv run cdk deploy --all
+```
+
+Use `--require-approval never` for automated deployments (e.g., in CI/CD pipelines).
+
+## Adding dependencies
+
+To add dependencies (e.g., additional CDK libraries):
+
+```bash
+$ uv add aws-cdk-lib
+```
+
+For development dependencies (e.g., `pytest`, `flake8`):
+
+```bash
+$ uv add --group dev pytest
+```
+
+After adding dependencies, sync the environment:
+
+```bash
+$ uv sync
+```
+
+## Running tests
+
+Unit tests are located in `cfdb/tests/` and `tests/unit/`. To run tests:
+
+```bash
+$ uv run pytest
+```
+
+To run linters for code quality:
+
+```bash
+$ uv run flake8 .
+```
+
+## Project structure
+
+* `app.py`: Entry point for the CDK application.
+* `cfdb/`: Contains stack definitions (e.g., `storage_stack.py`) and tests.
+* `tests/`: Contains unit tests (e.g., `tests/unit/test_storage_stack.py`).
+* `pyproject.toml`: Defines project dependencies and configuration.
+* `uv.lock`: Locks dependency versions.
+* `cdk.json`: Configures the CDK Toolkit.
 
 ## Useful commands
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+* `uv run cdk ls`          List all stacks in the app.
+* `uv run cdk synth`       Emit the synthesized CloudFormation templates.
+* `uv run cdk deploy`      Deploy stacks to your AWS account/region.
+* `uv run cdk diff`        Compare deployed stacks with current state.
+* `uv run cdk docs`        Open CDK documentation.
 
-Enjoy!
+## Troubleshooting
+
+* Ensure `uv` is installed (`uv --version`).
+* Verify AWS credentials (`aws sts get-caller-identity`).
+* Check `pyproject.toml` for correct dependencies.
+* If tests fail, ensure the `uv`-managed environment is active and dependencies are installed (`uv sync`).
+
+Enjoy building your sports data platform!
