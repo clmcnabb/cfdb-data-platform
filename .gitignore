@@ -11,3 +11,6 @@ cdk.out
 
 # Enviroment
 .vscode
+
+# GitHub Actions
+.github
