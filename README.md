@@ -1,4 +1,3 @@
-
 # Sports Data Platform CDK Project
 
 This project defines an AWS Cloud Development Kit (CDK) application for a sports data platform. The platform includes:
@@ -14,7 +13,7 @@ The project uses Python and `uv` for dependency management. The `cdk.json` file 
 
 ## Prerequisites
 
-* **Python 3.9+** : Ensure `python3` is installed and accessible in your PATH.
+* **Python 3.12+** : Ensure `python3` is installed and accessible in your PATH.
 * **uv** : Install `uv` for dependency and environment management. See [uv documentation](https://docs.astral.sh/uv/) for installation instructions.
 * **AWS CLI** : Configure with valid credentials and a default region (e.g., `us-east-1`).
 * **AWS CDK CLI** : Install globally with `npm install -g aws-cdk`.
